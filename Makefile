@@ -50,7 +50,7 @@ MISC_TOOLS = phoenix_info sunxi-nand-image-builder
 
 # ARM binaries and images
 # Note: To use this target, set/adjust CROSS_COMPILE and MKSUNXIBOOT if needed
-BINFILES = jtag-loop.sunxi fel-sdboot.sunxi uart0-helloworld-sdboot.sunxi
+BINFILES = jtag-loop.sunxi fel-sdboot.sunxi uart0-helloworld-sdboot.sunxi emmc-write.bin
 
 MKSUNXIBOOT ?= mksunxiboot
 PATH_DIRS := $(shell echo $$PATH | sed -e 's/:/ /g')
@@ -170,6 +170,9 @@ fel-sdboot.elf: fel-sdboot.S fel-sdboot.lds
 
 uart0-helloworld-sdboot.elf: uart0-helloworld-sdboot.c uart0-helloworld-sdboot.lds
 	$(CROSS_CC) -g $(ARM_ELF_FLAGS) $< -nostdlib -o $@ -T uart0-helloworld-sdboot.lds -Wl,-N
+
+emmc-write.elf: emmc-write.c emmc-write.lds
+	$(CROSS_CC) -g $(ARM_ELF_FLAGS) $< -nostdlib -o $@ -T emmc-write.lds -Wl,-N
 
 boot_head_sun3i.elf: boot_head.S boot_head.lds
 	$(CROSS_CC) -g $(ARM_ELF_FLAGS) $< -nostdlib -o $@ -T boot_head.lds -Wl,-N -DMACHID=0x1094
